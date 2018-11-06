@@ -12,5 +12,10 @@ SQLALCHEMY_DATABASE_URI = os.environ.get(
 )
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-APT_NO = os.environ.get("APT_NO", "172")
-PHONE = os.environ.get("PHONE", "5184152406")
+APT_NO = os.environ.get("APT_NO", "0")
+PHONE = os.environ.get("PHONE", "1231116969")
+
+USERS = {
+    "mbillow": os.environ.get("ADMIN_PASSWD", "secret"),
+    "guest": PHONE[-4:]
+}

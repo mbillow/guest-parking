@@ -2,6 +2,7 @@ import os
 import requests
 
 from flask import Flask, render_template, request, redirect, flash
+from flask_httpauth import HTTPDigestAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -17,16 +18,30 @@ from parking.models import *  # pylint: disable=wrong-import-position
 
 migrate = Migrate(app, db)
 
+auth = HTTPDigestAuth()
+
+
+@auth.get_password
+def get_pw(username):
+    if username in app.config["USERS"]:
+        return app.config["USERS"].get(username)
+    return None
+
 
 @app.route("/")
+@auth.login_required
 def index():
     """
     Renders the initial landing page.
     """
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        user=auth.username()
+    )
 
 
 @app.route("/booking", methods=['POST'])
+@auth.login_required
 def bookings():
 
     apt_info = requests.post(
@@ -89,10 +104,13 @@ def get_booking(booking_id):
     return render_template(
         "confirmation.html",
         booking=booking_info.json()[0],
-        booking_id=booking_id)
+        booking_id=booking_id,
+        user=auth.username()
+    )
 
 
 @app.route("/booking/<booking_id>/cancel")
+@auth.login_required
 def cancel_booking(booking_id):
     cancel = requests.post(
         url="http://pass2parktx.com/index.php/Pages/bookingCancellation",
@@ -112,6 +130,15 @@ def cancel_booking(booking_id):
 
 
 @app.route("/list")
+@auth.login_required
 def list_bookings():
+    if auth.username() != "mbillow":
+        flash("Unauthorized")
+        return redirect("/")
+    
     booking_list = Booking.query.order_by(Booking.created.desc()).limit(10).all()
-    return render_template("list.html", bookings=booking_list)
+    return render_template(
+        "list.html",
+        bookings=booking_list,
+        user=auth.username()
+    )
