@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+{% block head %}
+<head>
+    {% include "include/head.html" %}
+</head>
+{% endblock %}
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/">Parking Registration</a>
+    </div>
+</nav>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="container">
+    <div class="alert alert-success mt-3" role="alert">
+        {{ message }}
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+{% block body %}
+
+{% endblock %}
+
+{% block scripts %}
+{% include "include/scripts.html" %}
+{% endblock %}
+</body>
+</html>

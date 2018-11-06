@@ -1,0 +1,34 @@
+{% extends 'include/base.html' %}
+{% block body %}
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header">
+            Last Ten Bookings
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Make</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Plate</th>
+                    <th scope="col">Info</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for booking in bookings %}
+                <tr {% if booking.cancelled %}class="table-danger"{% endif %}>
+                    <th scope="row">{{ booking.name }}</th>
+                    <td>{{ booking.model }}</td>
+                    <td>{{ booking.color }}</td>
+                    <td>{{ booking.plate }}</td>
+                    <td><a href="/booking/{{booking.id}}">Edit</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

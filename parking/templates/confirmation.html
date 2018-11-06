@@ -1,0 +1,25 @@
+{% extends 'include/base.html' %}
+{% block body %}
+<div class="container">
+<div class="card mt-4">
+    <div class="card-header">
+        Guest Booking Information
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            <strong>Spot Type: </strong> {{ booking["SlotNo"] }}
+        </p>
+        <p class="card-text">
+            <strong>Start Date: </strong> {{ booking["StartDate"] }}
+        </p>
+        <p class="card-text">
+            <strong>End Date: </strong> {{ booking["EndDate"] }}
+        </p>
+        <p class="card-text">
+            <strong>Licence Plate: </strong> {{ booking["Plate"] }}
+        </p>
+        <a href="/booking/{{booking_id}}/cancel" class="btn btn-danger btn-lg active" role="button">Cancel Reservation</a>
+    </div>
+</div>
+</div>
+{% endblock %}
